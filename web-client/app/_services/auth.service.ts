@@ -7,71 +7,66 @@ export class User {
     public email: string,
     public password: string) { }
 }
- 
-var users = [
-  new User('admin@admin.com','admin'),
-  new User('user1@gmail.com','123')
-];
- 
+
 @Injectable()
 export class AuthenticationService {
- private _endPointUrl:string = "http://104.197.22.134:5984/_session";
- private _rootEndPointUrl:string = "http://admin:admin@104.197.22.134:5984/_users/org.couchdb.user:";
+  private _endPointUrl: string = "http://104.197.22.134:5984/_session";
+  private _rootEndPointUrl: string = "http://admin:admin@104.197.22.134:5984/_users/org.couchdb.user:";
 
   constructor(
-    private _router: Router,private http:Http){}
- 
+    private _router: Router, private http: Http) { }
+
   logout() {
     localStorage.removeItem("user");
     this._router.navigate(['Login']);
   }
- 
-  login(user:any){
-    let body = JSON.stringify({ name:user.email,password:user.password });
+
+  login(user: any) {
+    let body = JSON.stringify({ name: user.email, password: user.password });
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
 
     return this.http.post(this._endPointUrl, body, options)
-             .toPromise()
-             .then(this.extractData)
-             .catch(this.handleError);
+      .toPromise()
+      .then(this.extractData)
+      .catch(this.handleError);
   }
 
-  create(user:any){
-     let url = this._rootEndPointUrl + user.email;
-     let body = JSON.stringify({ name:user.email,password:user.password,roles: [],type:'user'});
-     let headers = new Headers({ 'Content-Type': 'application/json' });
-     let options = new RequestOptions({ headers: headers });
-     
-      return this.http.put(url, body, options)
-             .toPromise()
-             .then(this.extractData)
-             .catch(this.handleError);
+  create(user: any) {
+    let url = this._rootEndPointUrl + user.email;
+    let body = JSON.stringify({ name: user.email, password: user.password, roles: [], type: 'user' });
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+
+    return this.http.put(url, body, options)
+      .toPromise()
+      .then(this.extractData)
+      .catch(this.handleError);
   }
- 
-   checkCredentials(){
-    if (localStorage.getItem("user") === null){
-        return false;
+
+  checkCredentials() {
+    if (localStorage.getItem("user") === null) {
+      return false;
     }
     return true;
   }
 
   private extractData(res: Response) {
-  let body = res.json();
-  return body || { };
-} 
+    let body = res.json();
+    return body || {};
+  }
 
-private handleError (error: any) {
-  // In a real world app, we might use a remote logging infrastructure
-  // We'd also dig deeper into the error to get a better message
-  let errMsg = (error.message) ? error.message :
-    error.status ? `${error.status} - ${error.statusText}` : 'Hey Couch db Server error';
-  console.error(errMsg); // log to console instead
-  //return Promise.reject(errMsg);
-} 
+  private handleError(error: any) {
+    // In a real world app, we might use a remote logging infrastructure
+    // We'd also dig deeper into the error to get a better message
+    let errMsg = (error.message) ? error.message :
+      error.status ? `${error.status} - ${error.statusText}` : 'Hey Couch db Server error';
+    console.error(errMsg); // log to console instead
+    //return Promise.reject(errMsg);
+  }
 
- getCurrentUser(){
-  let username = localStorage.getItem("user");
-  return new User(username,'Encrypted');
-}
+  getCurrentUser() {
+    let username = localStorage.getItem("user");
+    return new User(username, 'Encrypted');
+  }
 }
