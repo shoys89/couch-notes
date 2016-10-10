@@ -19,7 +19,6 @@ var RegisterComponent = (function () {
         this._router = _router;
         this.email = "";
         this.password = "";
-        // public user = new User('','');
         this.errorMsg = '';
         console.log('home');
     }

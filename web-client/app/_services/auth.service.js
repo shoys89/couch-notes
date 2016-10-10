@@ -19,10 +19,6 @@ var User = (function () {
     return User;
 }());
 exports.User = User;
-var users = [
-    new User('admin@admin.com', 'admin'),
-    new User('user1@gmail.com', '123')
-];
 var AuthenticationService = (function () {
     function AuthenticationService(_router, http) {
         this._router = _router;

@@ -19,7 +19,6 @@ var LoginComponent = (function () {
         this.errorMsg = '';
         console.log('home');
     }
-    //localStorage.setItem("user", body.name);
     LoginComponent.prototype.login = function () {
         var _this = this;
         this._service.login(this.user)
