@@ -48,6 +48,18 @@ var PrivateComponent = (function () {
         this.selectedNote = note;
         console.log(note);
     };
+    PrivateComponent.prototype.create = function (note) {
+        if ("undefined" === typeof (note.user)) {
+            note.user = this.user.email;
+        }
+        if (note) {
+            this.service.createNote(note, this.user.email).then(function (success) { return (location.reload()); }, function (error) { return ((alert("Need to catch this error in a better way" + error))); });
+        }
+    };
+    PrivateComponent.prototype.update = function (note) {
+        console.log(note);
+        this.service.updateNote(note, this.user.email).then(function (sucess) { return (alert('document updated')); }, function (error) { return ((alert("Need to catch this error in a better way" + error))); });
+    };
     PrivateComponent.prototype.getUsername = function () {
         this.user = this._service.getCurrentUser();
     };

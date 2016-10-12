@@ -32,6 +32,46 @@ export class DocumentService {
             .then(response => response.json() as Note)
     }
 
+    createNote(note:any, user:string){
+        try {
+            let hashName = md5(user);
+            let headers: any = new Headers();
+            headers.append('Authorization', 'Basic YWRtaW46YWRtaW4=');
+            headers.append("Content-Type", "application/json");
+            let options = new RequestOptions({ headers: headers });
+
+            let url = this._endPointUrl + this._privatePrefix + hashName+'/';
+
+            return this.http.post(url, JSON.stringify(note),options)
+                .toPromise()
+                .then(this.extractData)
+                .catch(this.handleError);
+
+        } catch (error) {
+                throw error;
+        }
+    }
+
+    updateNote(data: any, user: string) {
+        try {
+            let hashName = md5(user);
+            let headers: any = new Headers();
+            headers.append('Authorization', 'Basic YWRtaW46YWRtaW4=');
+            headers.append("Content-Type", "application/x-www-form-urlencoded");
+            let options = new RequestOptions({ headers: headers });
+
+            let url = this._endPointUrl + this._privatePrefix + hashName + '/' + data._id;
+
+            return this.http.put(url, JSON.stringify(data),options)
+                .toPromise()
+                .then(this.extractData)
+                .catch(this.handleError);
+
+        } catch (error) {
+            console.log("There was an error updating your document :( ");
+        }
+    }
+
     initializeDB(user: string) {
         try {
             let hashName = md5(user);

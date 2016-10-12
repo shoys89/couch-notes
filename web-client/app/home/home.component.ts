@@ -49,6 +49,26 @@ export class PrivateComponent {
         console.log(note);
     }
 
+    create(note: any) {
+        if("undefined" === typeof(note.user)){
+            note.user = this.user.email;
+        }
+        if (note) {
+            this.service.createNote(note, this.user.email).then(
+                success => (location.reload()),
+                error => ((alert("Need to catch this error in a better way" + error)))
+            )
+        }
+    }
+
+    update(note: any) {
+        console.log(note);
+        this.service.updateNote(note, this.user.email).then(
+            sucess => (alert('document updated')),
+            error => ((alert("Need to catch this error in a better way" + error)))
+        );
+    }
+
     private getUsername() {
         this.user = this._service.getCurrentUser();
     }

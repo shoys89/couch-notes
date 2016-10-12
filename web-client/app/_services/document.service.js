@@ -31,6 +31,40 @@ var DocumentService = (function () {
             .toPromise()
             .then(function (response) { return response.json(); });
     };
+    DocumentService.prototype.createNote = function (note, user) {
+        try {
+            var hashName = md5(user);
+            var headers = new http_1.Headers();
+            headers.append('Authorization', 'Basic YWRtaW46YWRtaW4=');
+            headers.append("Content-Type", "application/json");
+            var options = new http_1.RequestOptions({ headers: headers });
+            var url = this._endPointUrl + this._privatePrefix + hashName + '/';
+            return this.http.post(url, JSON.stringify(note), options)
+                .toPromise()
+                .then(this.extractData)
+                .catch(this.handleError);
+        }
+        catch (error) {
+            throw error;
+        }
+    };
+    DocumentService.prototype.updateNote = function (data, user) {
+        try {
+            var hashName = md5(user);
+            var headers = new http_1.Headers();
+            headers.append('Authorization', 'Basic YWRtaW46YWRtaW4=');
+            headers.append("Content-Type", "application/x-www-form-urlencoded");
+            var options = new http_1.RequestOptions({ headers: headers });
+            var url = this._endPointUrl + this._privatePrefix + hashName + '/' + data._id;
+            return this.http.put(url, JSON.stringify(data), options)
+                .toPromise()
+                .then(this.extractData)
+                .catch(this.handleError);
+        }
+        catch (error) {
+            console.log("There was an error updating your document :( ");
+        }
+    };
     DocumentService.prototype.initializeDB = function (user) {
         var _this = this;
         try {
