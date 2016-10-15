@@ -18,13 +18,14 @@ var index_1 = require('./home/index');
 var index_2 = require('./login/index');
 var index_3 = require('./register/index');
 var auth_service_1 = require('./_services/auth.service');
+var truncate_pipe_1 = require('./_pipes/truncate.pipe');
 var AppModule = (function () {
     function AppModule() {
     }
     AppModule = __decorate([
         core_1.NgModule({
             imports: [platform_browser_1.BrowserModule, http_1.HttpModule, forms_1.FormsModule, app_routes_1.routing],
-            declarations: [app_component_1.AppComponent, index_1.PrivateComponent, index_2.LoginComponent, index_3.RegisterComponent],
+            declarations: [app_component_1.AppComponent, index_1.PrivateComponent, index_2.LoginComponent, index_3.RegisterComponent, truncate_pipe_1.TruncatePipe],
             bootstrap: [app_component_1.AppComponent],
             providers: [auth_service_1.AuthenticationService]
         }), 

@@ -1,9 +1,9 @@
-import {Component} from '@angular/core';
-import {AuthenticationService, User} from '../_services/auth.service'
-import {Router} from '@angular/router';
-import {DocumentService} from '../_services/document.service';
-import {Document} from '../_models/document';
-import {Note} from '../_models/note';
+import { Component } from '@angular/core';
+import { AuthenticationService, User } from '../_services/auth.service'
+import { Router } from '@angular/router';
+import { DocumentService } from '../_services/document.service';
+import { Document } from '../_models/document';
+import { Note } from '../_models/note';
 
 @Component({
     selector: 'login-form',
@@ -27,7 +27,7 @@ export class PrivateComponent {
         }
         else {
             this.user = this._service.getCurrentUser();
-            this.service.getAllDocs(this.user.email).then(documents => this.getNotes(documents));
+            this.service.getAllDocs(this.user.email).then(documents => { this.getNotes(this.documents = documents) });
             console.log(this._service.getCurrentUser());
         }
     }
@@ -39,23 +39,22 @@ export class PrivateComponent {
 
     getNotes(documents: any) {
         for (let doc of documents) {
-            console.log(doc);
             this.service.getNoteById(this.user.email, doc.id).then(note => this.notes.push(note));
         }
     }
 
     selectNote(note: any) {
         this.selectedNote = note;
-        console.log(note);
+        window.scrollTo(0, 0);
     }
 
     create(note: any) {
-        if("undefined" === typeof(note.user)){
+        if ("undefined" === typeof (note.user)) {
             note.user = this.user.email;
         }
         if (note) {
             this.service.createNote(note, this.user.email).then(
-                success => (location.reload()),
+                success => (this.service.getNoteById(this.user.email, success.id).then(note => this.notes.push(note))),
                 error => ((alert("Need to catch this error in a better way" + error)))
             )
         }

@@ -28,7 +28,7 @@ var PrivateComponent = (function () {
         }
         else {
             this.user = this._service.getCurrentUser();
-            this.service.getAllDocs(this.user.email).then(function (documents) { return _this.getNotes(documents); });
+            this.service.getAllDocs(this.user.email).then(function (documents) { _this.getNotes(_this.documents = documents); });
             console.log(this._service.getCurrentUser());
         }
     };
@@ -40,20 +40,20 @@ var PrivateComponent = (function () {
         var _this = this;
         for (var _i = 0, documents_1 = documents; _i < documents_1.length; _i++) {
             var doc = documents_1[_i];
-            console.log(doc);
             this.service.getNoteById(this.user.email, doc.id).then(function (note) { return _this.notes.push(note); });
         }
     };
     PrivateComponent.prototype.selectNote = function (note) {
         this.selectedNote = note;
-        console.log(note);
+        window.scrollTo(0, 0);
     };
     PrivateComponent.prototype.create = function (note) {
+        var _this = this;
         if ("undefined" === typeof (note.user)) {
             note.user = this.user.email;
         }
         if (note) {
-            this.service.createNote(note, this.user.email).then(function (success) { return (location.reload()); }, function (error) { return ((alert("Need to catch this error in a better way" + error))); });
+            this.service.createNote(note, this.user.email).then(function (success) { return (_this.service.getNoteById(_this.user.email, success.id).then(function (note) { return _this.notes.push(note); })); }, function (error) { return ((alert("Need to catch this error in a better way" + error))); });
         }
     };
     PrivateComponent.prototype.update = function (note) {

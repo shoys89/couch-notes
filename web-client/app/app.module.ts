@@ -8,10 +8,11 @@ import { routing } from './app.routes';
 import { LoginComponent } from './login/index';
 import { RegisterComponent } from './register/index';
 import {AuthenticationService} from './_services/auth.service'
+import {TruncatePipe} from './_pipes/truncate.pipe'
 
 @NgModule({
     imports: [ BrowserModule,HttpModule,FormsModule,routing ],
-    declarations: [ AppComponent,PrivateComponent, LoginComponent, RegisterComponent],
+    declarations: [ AppComponent,PrivateComponent, LoginComponent, RegisterComponent,TruncatePipe],
     bootstrap:    [ AppComponent ],
     providers: [AuthenticationService]
 })
