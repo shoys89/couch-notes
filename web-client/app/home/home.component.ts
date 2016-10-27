@@ -16,6 +16,9 @@ export class PrivateComponent {
     private notes: Note[] = [];
     public selectedNote: Document = new Document();
     private user: User;
+    private onSuccess: boolean = false;
+    private onError: boolean = false;
+    private alertMsg: string = "";
 
     constructor(
         private _service: AuthenticationService, private _router: Router, private service: DocumentService) {
@@ -54,17 +57,29 @@ export class PrivateComponent {
         }
         if (note) {
             this.service.createNote(note, this.user.email).then(
-                success => (this.service.getNoteById(this.user.email, success.id).then(note => this.notes.push(note))),
-                error => ((alert("Need to catch this error in a better way" + error)))
-            )
+                success => {
+                    (this.service.getNoteById(this.user.email, success.id).then(note => this.notes.push(note)));
+                    this.onSuccess = true;
+                    this.alertMsg = "Your note has been created!";
+                },
+                error => {
+                this.onError = true;
+                this.alertMsg = error;
+            })
         }
     }
 
     update(note: any) {
         console.log(note);
         this.service.updateNote(note, this.user.email).then(
-            sucess => (alert('document updated')),
-            error => ((alert("Need to catch this error in a better way" + error)))
+            sucess => {
+                this.onSuccess = true;
+                this.alertMsg = "Your note has been updated!";
+            },
+            error => {
+                this.onError = true;
+                this.alertMsg = error;
+            }
         );
     }
 

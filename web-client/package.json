@@ -38,7 +38,8 @@
     "zone.js": "^0.6.23",
     "angular2-in-memory-web-api": "0.0.20",
     "bootstrap": "^3.3.6",
-	"blueimp-md5": "2.4.0"	
+	"blueimp-md5": "2.4.0",
+  "jquery": "3.1.1"
   },
   "devDependencies": {
     "concurrently": "^2.2.0",
@@ -57,7 +58,8 @@
     "karma-jasmine": "^0.3.8",
     "protractor": "^3.3.0",
     "rimraf": "^2.5.2",
-	"blueimp-md5": "2.4.0"
+	"blueimp-md5": "2.4.0",
+  "jquery": "3.1.1"
   },
   "repository": {},
   "main": "karma-test-shim.js"

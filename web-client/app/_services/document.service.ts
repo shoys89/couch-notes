@@ -105,8 +105,7 @@ export class DocumentService {
         // We'd also dig deeper into the error to get a better message
         let errMsg = (error.message) ? error.message :
             error.status ? `${error.status} - ${error.statusText}` : 'Hey Couch db Server error';
-        console.error(errMsg); // log to console instead
-        //return Promise.reject(errMsg);
+        return Promise.reject(errMsg);
     }
 
 }

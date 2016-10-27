@@ -12,7 +12,8 @@ export class LoginComponent {
 
     public user = new User('', '');
     public errorMsg = '';
-
+    private error:boolean = false;
+    
     constructor(
         private _service: AuthenticationService, private _router: Router) {
         console.log('home');
@@ -22,6 +23,6 @@ export class LoginComponent {
         this._service.login(this.user)
             .then(
             sucess => { localStorage.setItem("user", sucess.name); this._router.navigate(['/home']) },
-            error => this.errorMsg = 'Failed to login');
+            error => {this.errorMsg = 'Failed to login'; this.error=true;});
     }
 }

@@ -17,12 +17,13 @@ var LoginComponent = (function () {
         this._router = _router;
         this.user = new auth_service_1.User('', '');
         this.errorMsg = '';
+        this.error = false;
         console.log('home');
     }
     LoginComponent.prototype.login = function () {
         var _this = this;
         this._service.login(this.user)
-            .then(function (sucess) { localStorage.setItem("user", sucess.name); _this._router.navigate(['/home']); }, function (error) { return _this.errorMsg = 'Failed to login'; });
+            .then(function (sucess) { localStorage.setItem("user", sucess.name); _this._router.navigate(['/home']); }, function (error) { _this.errorMsg = 'Failed to login'; _this.error = true; });
     };
     LoginComponent = __decorate([
         core_1.Component({

@@ -20,6 +20,9 @@ var PrivateComponent = (function () {
         this.service = service;
         this.notes = [];
         this.selectedNote = new document_1.Document();
+        this.onSuccess = false;
+        this.onError = false;
+        this.alertMsg = "";
     }
     PrivateComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -53,12 +56,26 @@ var PrivateComponent = (function () {
             note.user = this.user.email;
         }
         if (note) {
-            this.service.createNote(note, this.user.email).then(function (success) { return (_this.service.getNoteById(_this.user.email, success.id).then(function (note) { return _this.notes.push(note); })); }, function (error) { return ((alert("Need to catch this error in a better way" + error))); });
+            this.service.createNote(note, this.user.email).then(function (success) {
+                (_this.service.getNoteById(_this.user.email, success.id).then(function (note) { return _this.notes.push(note); }));
+                _this.onSuccess = true;
+                _this.alertMsg = "Your note has been created!";
+            }, function (error) {
+                _this.onError = true;
+                _this.alertMsg = error;
+            });
         }
     };
     PrivateComponent.prototype.update = function (note) {
+        var _this = this;
         console.log(note);
-        this.service.updateNote(note, this.user.email).then(function (sucess) { return (alert('document updated')); }, function (error) { return ((alert("Need to catch this error in a better way" + error))); });
+        this.service.updateNote(note, this.user.email).then(function (sucess) {
+            _this.onSuccess = true;
+            _this.alertMsg = "Your note has been updated!";
+        }, function (error) {
+            _this.onError = true;
+            _this.alertMsg = error;
+        });
     };
     PrivateComponent.prototype.getUsername = function () {
         this.user = this._service.getCurrentUser();
