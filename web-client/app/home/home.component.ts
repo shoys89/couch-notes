@@ -97,6 +97,7 @@ export class PrivateComponent {
             sucess => {
                 this.onSuccess = true;
                 this.alertMsg = "Your note has been updated!";
+                (<any>$('#text-editor')).modal('hide');
             },
             error => {
                 this.onError = true;

@@ -93,6 +93,7 @@ var PrivateComponent = (function () {
         this.service.updateNote(note, this.user.email).then(function (sucess) {
             _this.onSuccess = true;
             _this.alertMsg = "Your note has been updated!";
+            $('#text-editor').modal('hide');
         }, function (error) {
             _this.onError = true;
             _this.alertMsg = error;
