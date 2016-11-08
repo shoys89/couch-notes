@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { DocumentService } from '../_services/document.service';
 import { Document } from '../_models/document';
 import { Note } from '../_models/note';
-declare var modal: any;
 
 @Component({
     selector: 'login-form',
@@ -83,7 +82,7 @@ export class PrivateComponent {
                     }
                     this.onSuccess = true;
                     this.alertMsg = "Your note has been deleted!";
-                    $('#text-editor').modal('hide');
+                    (<any>$('#text-editor')).modal('hide');
                 },
                 error => {
                     this.onError = true;
