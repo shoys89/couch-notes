@@ -104,9 +104,10 @@ var PrivateComponent = (function () {
     };
     PrivateComponent = __decorate([
         core_1.Component({
+            moduleId: module.id,
             selector: 'login-form',
             providers: [auth_service_1.AuthenticationService, document_service_1.DocumentService],
-            templateUrl: "./app/home/home.component.html"
+            templateUrl: "home.component.html"
         }), 
         __metadata('design:paramtypes', [auth_service_1.AuthenticationService, router_1.Router, document_service_1.DocumentService])
     ], PrivateComponent);

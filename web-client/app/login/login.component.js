@@ -27,9 +27,10 @@ var LoginComponent = (function () {
     };
     LoginComponent = __decorate([
         core_1.Component({
+            moduleId: module.id,
             selector: 'login-form',
             providers: [auth_service_1.AuthenticationService],
-            templateUrl: "./app/login/login.component.html"
+            templateUrl: "login.component.html"
         }), 
         __metadata('design:paramtypes', [auth_service_1.AuthenticationService, router_1.Router])
     ], LoginComponent);

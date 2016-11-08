@@ -3,9 +3,10 @@ import {AuthenticationService, User} from '../_services/auth.service';
 import {Router} from '@angular/router';
 
 @Component({
+     moduleId:module.id,
     selector: 'login-form',
     providers: [AuthenticationService],
-    templateUrl: `./app/login/login.component.html`
+    templateUrl: `login.component.html`
 })
 
 export class LoginComponent {

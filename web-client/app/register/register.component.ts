@@ -4,9 +4,10 @@ import {DocumentService} from '../_services/document.service';
 import {Router} from '@angular/router';
 
 @Component({
+     moduleId:module.id,
     selector: 'login-form',
     providers: [AuthenticationService, DocumentService],
-    templateUrl: `./app/register/register.component.html`
+    templateUrl: `register.component.html`
 })
 
 export class RegisterComponent {

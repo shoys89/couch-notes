@@ -6,9 +6,10 @@ import { Document } from '../_models/document';
 import { Note } from '../_models/note';
 
 @Component({
+    moduleId:module.id,
     selector: 'login-form',
     providers: [AuthenticationService, DocumentService],
-    templateUrl: `./app/home/home.component.html`
+    templateUrl: `home.component.html`
 })
 
 export class PrivateComponent {
