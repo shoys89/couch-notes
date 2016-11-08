@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import {Http, Headers, RequestOptions, Response } from '@angular/http';
+import { Http, Headers, RequestOptions, Response } from '@angular/http';
 import { Observable } from 'rxjs';
 import 'rxjs/add/operator/toPromise';
-import {Document} from '../_models/document';
-import {Note} from '../_models/note';
+import { Document } from '../_models/document';
+import { Note } from '../_models/note';
 declare var md5: any;
 
 @Injectable()
@@ -19,50 +19,60 @@ export class DocumentService {
     }
 
     getAllDocs(user: string): Promise<Document[]> {
-        let hashName = md5(user);
-        return this.http.get(this._endPointUrl + this._privatePrefix + hashName + '/_all_docs')
+        let url = this.buildConnectionString(user,this._privatePrefix);
+        return this.http.get(url + '_all_docs')
             .toPromise()
             .then(response => response.json().rows as Document[])
     }
 
     getNoteById(user: string, id: string): Promise<Note> {
-        let hashName = md5(user);
-        return this.http.get(this._endPointUrl + this._privatePrefix + hashName + '/' + id)
+        let url = this.buildConnectionString(user,this._privatePrefix);
+        return this.http.get(url + id)
             .toPromise()
             .then(response => response.json() as Note)
     }
 
-    createNote(note:any, user:string){
+    createNote(note: any, user: string) {
         try {
-            let hashName = md5(user);
             let headers: any = new Headers();
             headers.append('Authorization', 'Basic YWRtaW46YWRtaW4=');
             headers.append("Content-Type", "application/json");
             let options = new RequestOptions({ headers: headers });
+            let url = this.buildConnectionString(user,this._privatePrefix);
 
-            let url = this._endPointUrl + this._privatePrefix + hashName+'/';
-
-            return this.http.post(url, JSON.stringify(note),options)
+            return this.http.post(url, JSON.stringify(note), options)
                 .toPromise()
                 .then(this.extractData)
                 .catch(this.handleError);
 
         } catch (error) {
-                throw error;
+            throw error;
+        }
+    }
+
+    deleteNote(note: any, user: string){
+        try {
+            let url = this.buildConnectionString(user,this._privatePrefix);
+            
+            return this.http.delete(url+note._id+'?rev='+note._rev)
+                .toPromise()
+                .then(this.extractData)
+                .catch(this.handleError);
+        } catch (error) {
+            console.log("There was an error deleting your document :( ");
         }
     }
 
     updateNote(data: any, user: string) {
         try {
-            let hashName = md5(user);
             let headers: any = new Headers();
             headers.append('Authorization', 'Basic YWRtaW46YWRtaW4=');
             headers.append("Content-Type", "application/x-www-form-urlencoded");
             let options = new RequestOptions({ headers: headers });
 
-            let url = this._endPointUrl + this._privatePrefix + hashName + '/' + data._id;
+            let url = this.buildConnectionString(user,this._privatePrefix);
 
-            return this.http.put(url, JSON.stringify(data),options)
+            return this.http.put(url+ data._id, JSON.stringify(data), options)
                 .toPromise()
                 .then(this.extractData)
                 .catch(this.handleError);
@@ -74,22 +84,20 @@ export class DocumentService {
 
     initializeDB(user: string) {
         try {
-            let hashName = md5(user);
-            this.createDB(this._privatePrefix + hashName).then(
-                sucess => this.createDB(this._sharePrefix + hashName));
+            this.createDB(this.buildConnectionString(user,this._privatePrefix)).then(
+                sucess => this.createDB(this.buildConnectionString(user,this._sharePrefix)));
         } catch (error) {
             throw error;
         }
     }
 
-    createDB(dbname: string) {
-        let url = this._rootEndPointUrl + dbname;
+    createDB(url: string) {
         let headers: any = new Headers();
         headers.append('Authorization', 'Basic YWRtaW46YWRtaW4=');
         headers.append("Content-Type", "application/x-www-form-urlencoded");
         let options = new RequestOptions({ headers: headers });
 
-        return this.http.put(this._rootEndPointUrl + dbname, JSON.stringify({}), options)
+        return this.http.put(url, JSON.stringify({}), options)
             .toPromise()
             .then(this.extractData)
             .catch(this.handleError);
@@ -101,11 +109,15 @@ export class DocumentService {
     }
 
     private handleError(error: any) {
-        // In a real world app, we might use a remote logging infrastructure
-        // We'd also dig deeper into the error to get a better message
         let errMsg = (error.message) ? error.message :
             error.status ? `${error.status} - ${error.statusText}` : 'Hey Couch db Server error';
         return Promise.reject(errMsg);
+    }
+
+    private buildConnectionString(user: string, prefix:string) {
+        let hashName = md5(user);
+        let url = this._endPointUrl + prefix + hashName + '/';
+        return url;
     }
 
 }

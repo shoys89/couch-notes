@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { DocumentService } from '../_services/document.service';
 import { Document } from '../_models/document';
 import { Note } from '../_models/note';
+declare var modal: any;
 
 @Component({
     selector: 'login-form',
@@ -14,7 +15,9 @@ import { Note } from '../_models/note';
 export class PrivateComponent {
     private documents: Document[];
     private notes: Note[] = [];
-    public selectedNote: Document = new Document();
+    public newNote: Document = new Document();
+    public selectedNote: Note = new Note();
+    public title: string = "";
     private user: User;
     private onSuccess: boolean = false;
     private onError: boolean = false;
@@ -46,9 +49,9 @@ export class PrivateComponent {
         }
     }
 
-    selectNote(note: any) {
+    selectNote(note: Note) {
         this.selectedNote = note;
-        window.scrollTo(0, 0);
+        this.title = this.selectedNote.body;
     }
 
     create(note: any) {
@@ -63,9 +66,29 @@ export class PrivateComponent {
                     this.alertMsg = "Your note has been created!";
                 },
                 error => {
-                this.onError = true;
-                this.alertMsg = error;
-            })
+                    this.onError = true;
+                    this.alertMsg = error;
+                })
+        }
+    }
+
+    delete(note: any) {
+        console.log(note);
+        if (note) {
+            this.service.deleteNote(note, this.user.email).then(
+                success => {
+                    let i = this.notes.indexOf(note);
+                    if (i != -1) {
+                        this.notes.splice(i, 1);
+                    }
+                    this.onSuccess = true;
+                    this.alertMsg = "Your note has been deleted!";
+                    $('#text-editor').modal('hide');
+                },
+                error => {
+                    this.onError = true;
+                    this.alertMsg = error;
+                })
         }
     }
 

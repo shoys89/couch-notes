@@ -20,25 +20,24 @@ var DocumentService = (function () {
         this.http = http;
     }
     DocumentService.prototype.getAllDocs = function (user) {
-        var hashName = md5(user);
-        return this.http.get(this._endPointUrl + this._privatePrefix + hashName + '/_all_docs')
+        var url = this.buildConnectionString(user, this._privatePrefix);
+        return this.http.get(url + '_all_docs')
             .toPromise()
             .then(function (response) { return response.json().rows; });
     };
     DocumentService.prototype.getNoteById = function (user, id) {
-        var hashName = md5(user);
-        return this.http.get(this._endPointUrl + this._privatePrefix + hashName + '/' + id)
+        var url = this.buildConnectionString(user, this._privatePrefix);
+        return this.http.get(url + id)
             .toPromise()
             .then(function (response) { return response.json(); });
     };
     DocumentService.prototype.createNote = function (note, user) {
         try {
-            var hashName = md5(user);
             var headers = new http_1.Headers();
             headers.append('Authorization', 'Basic YWRtaW46YWRtaW4=');
             headers.append("Content-Type", "application/json");
             var options = new http_1.RequestOptions({ headers: headers });
-            var url = this._endPointUrl + this._privatePrefix + hashName + '/';
+            var url = this.buildConnectionString(user, this._privatePrefix);
             return this.http.post(url, JSON.stringify(note), options)
                 .toPromise()
                 .then(this.extractData)
@@ -48,15 +47,26 @@ var DocumentService = (function () {
             throw error;
         }
     };
+    DocumentService.prototype.deleteNote = function (note, user) {
+        try {
+            var url = this.buildConnectionString(user, this._privatePrefix);
+            return this.http.delete(url + note._id + '?rev=' + note._rev)
+                .toPromise()
+                .then(this.extractData)
+                .catch(this.handleError);
+        }
+        catch (error) {
+            console.log("There was an error deleting your document :( ");
+        }
+    };
     DocumentService.prototype.updateNote = function (data, user) {
         try {
-            var hashName = md5(user);
             var headers = new http_1.Headers();
             headers.append('Authorization', 'Basic YWRtaW46YWRtaW4=');
             headers.append("Content-Type", "application/x-www-form-urlencoded");
             var options = new http_1.RequestOptions({ headers: headers });
-            var url = this._endPointUrl + this._privatePrefix + hashName + '/' + data._id;
-            return this.http.put(url, JSON.stringify(data), options)
+            var url = this.buildConnectionString(user, this._privatePrefix);
+            return this.http.put(url + data._id, JSON.stringify(data), options)
                 .toPromise()
                 .then(this.extractData)
                 .catch(this.handleError);
@@ -68,20 +78,18 @@ var DocumentService = (function () {
     DocumentService.prototype.initializeDB = function (user) {
         var _this = this;
         try {
-            var hashName_1 = md5(user);
-            this.createDB(this._privatePrefix + hashName_1).then(function (sucess) { return _this.createDB(_this._sharePrefix + hashName_1); });
+            this.createDB(this.buildConnectionString(user, this._privatePrefix)).then(function (sucess) { return _this.createDB(_this.buildConnectionString(user, _this._sharePrefix)); });
         }
         catch (error) {
             throw error;
         }
     };
-    DocumentService.prototype.createDB = function (dbname) {
-        var url = this._rootEndPointUrl + dbname;
+    DocumentService.prototype.createDB = function (url) {
         var headers = new http_1.Headers();
         headers.append('Authorization', 'Basic YWRtaW46YWRtaW4=');
         headers.append("Content-Type", "application/x-www-form-urlencoded");
         var options = new http_1.RequestOptions({ headers: headers });
-        return this.http.put(this._rootEndPointUrl + dbname, JSON.stringify({}), options)
+        return this.http.put(url, JSON.stringify({}), options)
             .toPromise()
             .then(this.extractData)
             .catch(this.handleError);
@@ -91,11 +99,14 @@ var DocumentService = (function () {
         return body || {};
     };
     DocumentService.prototype.handleError = function (error) {
-        // In a real world app, we might use a remote logging infrastructure
-        // We'd also dig deeper into the error to get a better message
         var errMsg = (error.message) ? error.message :
             error.status ? error.status + " - " + error.statusText : 'Hey Couch db Server error';
         return Promise.reject(errMsg);
+    };
+    DocumentService.prototype.buildConnectionString = function (user, prefix) {
+        var hashName = md5(user);
+        var url = this._endPointUrl + prefix + hashName + '/';
+        return url;
     };
     DocumentService = __decorate([
         core_1.Injectable(), 

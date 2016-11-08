@@ -13,13 +13,16 @@ var auth_service_1 = require('../_services/auth.service');
 var router_1 = require('@angular/router');
 var document_service_1 = require('../_services/document.service');
 var document_1 = require('../_models/document');
+var note_1 = require('../_models/note');
 var PrivateComponent = (function () {
     function PrivateComponent(_service, _router, service) {
         this._service = _service;
         this._router = _router;
         this.service = service;
         this.notes = [];
-        this.selectedNote = new document_1.Document();
+        this.newNote = new document_1.Document();
+        this.selectedNote = new note_1.Note();
+        this.title = "";
         this.onSuccess = false;
         this.onError = false;
         this.alertMsg = "";
@@ -48,7 +51,7 @@ var PrivateComponent = (function () {
     };
     PrivateComponent.prototype.selectNote = function (note) {
         this.selectedNote = note;
-        window.scrollTo(0, 0);
+        this.title = this.selectedNote.body;
     };
     PrivateComponent.prototype.create = function (note) {
         var _this = this;
@@ -60,6 +63,24 @@ var PrivateComponent = (function () {
                 (_this.service.getNoteById(_this.user.email, success.id).then(function (note) { return _this.notes.push(note); }));
                 _this.onSuccess = true;
                 _this.alertMsg = "Your note has been created!";
+            }, function (error) {
+                _this.onError = true;
+                _this.alertMsg = error;
+            });
+        }
+    };
+    PrivateComponent.prototype.delete = function (note) {
+        var _this = this;
+        console.log(note);
+        if (note) {
+            this.service.deleteNote(note, this.user.email).then(function (success) {
+                var i = _this.notes.indexOf(note);
+                if (i != -1) {
+                    _this.notes.splice(i, 1);
+                }
+                _this.onSuccess = true;
+                _this.alertMsg = "Your note has been deleted!";
+                $('#text-editor').modal('hide');
             }, function (error) {
                 _this.onError = true;
                 _this.alertMsg = error;
