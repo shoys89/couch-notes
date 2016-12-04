@@ -13,8 +13,8 @@ var http_1 = require('@angular/http');
 require('rxjs/add/operator/toPromise');
 var DocumentService = (function () {
     function DocumentService(http) {
-        this._endPointUrl = "http://104.197.22.134:5984/";
-        this._rootEndPointUrl = "http://admin:admin@104.197.22.134:5984/";
+        this._endPointUrl = "http://130.211.127.182:5984/";
+        this._rootEndPointUrl = "http://admin:admin@130.211.127.182:5984/";
         this._sharePrefix = "share_";
         this._privatePrefix = "personal_";
         this.http = http;

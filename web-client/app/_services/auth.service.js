@@ -23,8 +23,8 @@ var AuthenticationService = (function () {
     function AuthenticationService(_router, http) {
         this._router = _router;
         this.http = http;
-        this._endPointUrl = "http://104.197.22.134:5984/_session";
-        this._rootEndPointUrl = "http://admin:admin@104.197.22.134:5984/_users/org.couchdb.user:";
+        this._endPointUrl = "http://130.211.127.182:5984/_session";
+        this._rootEndPointUrl = "http://admin:admin@130.211.127.182:5984/_users/org.couchdb.user:";
     }
     AuthenticationService.prototype.logout = function () {
         localStorage.removeItem("user");

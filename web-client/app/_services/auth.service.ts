@@ -10,8 +10,8 @@ export class User {
 
 @Injectable()
 export class AuthenticationService {
-  private _endPointUrl: string = "http://104.197.22.134:5984/_session";
-  private _rootEndPointUrl: string = "http://admin:admin@104.197.22.134:5984/_users/org.couchdb.user:";
+  private _endPointUrl: string = "http://130.211.127.182:5984/_session";
+  private _rootEndPointUrl: string = "http://admin:admin@130.211.127.182:5984/_users/org.couchdb.user:";
 
   constructor(
     private _router: Router, private http: Http) { }
