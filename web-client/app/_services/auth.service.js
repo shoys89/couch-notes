@@ -28,7 +28,6 @@ var AuthenticationService = (function () {
     }
     AuthenticationService.prototype.logout = function () {
         localStorage.removeItem("user");
-        this._router.navigate(['Login']);
     };
     AuthenticationService.prototype.login = function (user) {
         var body = JSON.stringify({ name: user.email, password: user.password });

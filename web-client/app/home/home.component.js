@@ -41,6 +41,7 @@ var PrivateComponent = (function () {
     PrivateComponent.prototype.logout = function () {
         this.user = new auth_service_1.User('Not logged', '');
         this._service.logout();
+        this._router.navigate(['/login']);
     };
     PrivateComponent.prototype.getNotes = function (documents) {
         var _this = this;

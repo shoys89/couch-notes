@@ -18,7 +18,6 @@ export class AuthenticationService {
 
   logout() {
     localStorage.removeItem("user");
-    this._router.navigate(['Login']);
   }
 
   login(user: any) {

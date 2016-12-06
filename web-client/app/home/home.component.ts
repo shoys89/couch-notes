@@ -41,6 +41,7 @@ export class PrivateComponent {
     logout() {
         this.user = new User('Not logged', '');
         this._service.logout();
+        this._router.navigate(['/login']);
     }
 
     getNotes(documents: any) {
