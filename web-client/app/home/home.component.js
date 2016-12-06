@@ -38,7 +38,8 @@ var PrivateComponent = (function () {
             console.log(this._service.getCurrentUser());
         }
     };
-    PrivateComponent.prototype.logout = function () {
+    PrivateComponent.prototype.logout = function (event) {
+        event.stopPropagation();
         this.user = new auth_service_1.User('Not logged', '');
         this._service.logout();
         this._router.navigate(['/login']);

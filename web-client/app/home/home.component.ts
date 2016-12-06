@@ -38,7 +38,8 @@ export class PrivateComponent {
         }
     }
 
-    logout() {
+    logout(event:any) {
+        event.stopPropagation();
         this.user = new User('Not logged', '');
         this._service.logout();
         this._router.navigate(['/login']);

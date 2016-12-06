@@ -28,7 +28,7 @@
         <li><a href="#about">About</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
-      <p class="navbar-text navbar-right">Signed in as <a href="#" class="navbar-link">{{user.email}}</a><a (click)="logout()" href="#">Click Here to logout</a></p>
+      <p class="navbar-text navbar-right">Signed in as <label class="navbar-link">{{user.email}}</label>  <a (click)="logout($event)"></a></p>
     </div>
     <!-- /.nav-collapse -->
   </div>
