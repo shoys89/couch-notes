@@ -8,8 +8,8 @@ declare var md5: any;
 
 @Injectable()
 export class DocumentService {
-    private _endPointUrl: string = "http://130.211.127.182:5984/";
-    private _rootEndPointUrl: string = "http://admin:admin@130.211.127.182:5984/";
+    private _endPointUrl: string = "http://35.184.142.187:5984/";
+    private _rootEndPointUrl: string = "http://admin:admin@35.184.142.187:5984/";
     private http: Http;
     private _sharePrefix: string = "share_";
     private _privatePrefix: string = "personal_";
