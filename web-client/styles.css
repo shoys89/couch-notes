@@ -7,3 +7,13 @@ textarea {
  padding: 2px 10px;
  border: solid 1px #ddd;
 }
+
+.thumbnail{
+    background: url(assets/images/edit-note.png) repeat-y !important;
+    margin: 0px 2px 12px 2px;
+    width: 32%;
+}
+
+.thumbnail p{
+    word-wrap: break-word
+}

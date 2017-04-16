@@ -94,8 +94,8 @@
       <!-- <ul><li (click)="selectNote(note)" *ngFor="let note of notes">{{note.user}}</li></ul>-->
       <div class="row">
 
-        <div (click)="selectNote(note)" *ngFor="let note of notes" class="col-xs-6 col-lg-4">
-          <h2>{{note.body | truncate : 10 : ''}} </h2>
+        <div (click)="selectNote(note)" *ngFor="let note of notes" class="col-xs-6 col-lg-4 thumbnail">
+          <h2>{{note.body | truncate : 12 : ''}} </h2>
           <p> {{note.body | truncate : 117 }} </p>
           <p><a class="btn btn-default" (click)="selectNote(note)" data-toggle="modal" data-target="#text-editor" role="button">View more &raquo;</a></p>
         </div>
